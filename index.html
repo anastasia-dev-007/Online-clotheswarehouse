@@ -8,26 +8,59 @@
 </head>
 
 <body>
-    <div>
-        <section>
-            <header>
-                <button onclick="addNewProduct()">Add new product</button>
-            </header>
+    <header>
+        <h1>Online Clothes Warehouse</h1>
+    </header>
 
-            <h3>List products</h3>
+    <section>
+        <h3>List of products in the warehouse</h3>
+        <div id="productsList"></div>
+        <button onclick="addNewProduct()">Add new product</button>
+    </section>
 
-            <div id="productsList"></div>
+    <hr>
 
-        </br><hr></br>
+    <section>
+        <h3>Order products</h3>
+        <div id="orderedProductsList"></div>
+        <button id = "orderProductBtn" onclick="getProductByName()">Select product</button>
+    </section>
 
-            <div>
-                <button onclick="findMostExpensiveProduct()" id="showMostExpensiveButton">Show Most Expensive Product</button>
-                <p id="resultMostExpensiveProduct"></p>
-            </div>
+    <hr>
+
+    <section>
+        <header>
+            <h3>Most expensive product in the warehouse</h3>
+        </header>
+        <button onclick="findMostExpensiveProduct()" id="showMostExpensiveButton">Show Most Expensive
+            Product</button> <!--dar lucreaza si fara atributul "onclick". De ce?-->
+        <div id="resultMostExpensiveProduct"></div>
+    </section>
+
+    <hr>
+
+    <section>
+        <header>
+            <h3>Cheapest product in the warehouse</h3>
+        </header>
+
+        <button id="showCheapestButton">Show Cheapest Product</button>
+        <div id="resultCheapestProduct"></div>
+    </section>
+
+    <hr>
+
+    <section>
+        <header>
+            <h3>Product between a price interval</h3>
+        </header>
+
+        <button id="showIntervalPriceButton">Show product with price between interval</button>
+        <div id="resultIntervalPriceProduct"></div>
+    </section>
 
 
-        </section>
-    </div>
+
     <script src="script.js"></script>
 </body>
 

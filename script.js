@@ -168,7 +168,6 @@ const deleteProduct = ({ name }) => {
     }
 }
 
-
 renderProducts();
 
 
@@ -188,13 +187,11 @@ const findMostExpensiveProduct = (products) => {
 
 // Function to render the most expensive product
 const renderMostExpensiveProduct = () => {
-    const resultContainer = document.getElementById("resultMostExpensiveProduct");
-    const resultParagraph = document.createElement("p");
-
     // Get the most expensive product
     const mostExpensiveProduct = findMostExpensiveProduct(products);
 
-
+    const resultContainer = document.getElementById("resultMostExpensiveProduct");
+    const resultParagraph = document.createElement("p");
     const resultText = document.createTextNode(`The most expensive product is: ${mostExpensiveProduct.name} with a price of $${mostExpensiveProduct.price}`);
     resultParagraph.appendChild(resultText);
 
@@ -206,4 +203,102 @@ const renderMostExpensiveProduct = () => {
 
 // Add click event listener to the button
 showMostExpensiveButton.addEventListener("click", renderMostExpensiveProduct);
+
+
+// Function to find cheapest product
+const findCheapestProduct = (products) => {
+    let cheapestProduct = products[0];
+    
+    products.forEach(product => {
+        if(product.price < cheapestProduct.price) {
+            cheapestProduct = product;
+        }
+    });
+    return cheapestProduct;
+}    
+
+
+// Function to render the cheapest product
+const renderCheapestProduct = () => {
+        // Get the cheapest product
+const cheapestProduct = findCheapestProduct(products);
+
+const resultContainer = document.getElementById("resultCheapestProduct");
+const resultParagraph = document.createElement("p");
+const resultText = document.createTextNode(`Cheapest product is: ${cheapestProduct.name} with a price of $${cheapestProduct.price}`);
+resultParagraph.appendChild(resultText);
+
+// Clear the container and add the result
+resultContainer.innerHTML = "";
+resultContainer.appendChild(resultParagraph);
+}
+
+// Add click event listener to the button
+showCheapestButton.addEventListener("click", renderCheapestProduct);
+
+
+
+// Function to find interval price product
+const identifyIntervalProducts = (products, minPrice, maxPrice) => {
+    return products.filter((item) => item.price >= minPrice && item.price <= maxPrice);
+};
+
+// Function to render the interval price product
+const renderIntervalPriceProduct = () => {
+    // Prompt the user for the minimum and maximum prices
+    const minPrice = parseFloat(prompt("Enter the minimum price:"));
+    const maxPrice = parseFloat(prompt("Enter the maximum price:"));
+
+    // Get the interval price products
+    const intervalPriceProducts = identifyIntervalProducts(products, minPrice, maxPrice);
+
+    const resultContainer = document.getElementById("resultIntervalPriceProduct");
+    resultContainer.innerHTML = ""; // Clear the container
+    
+        // Create and append a paragraph for each product in the interval
+        intervalPriceProducts.forEach(product => {
+            const resultParagraph = document.createElement("li");
+            const resultText = document.createTextNode(`${product.name} with a price of $${product.price}`);
+            resultParagraph.appendChild(resultText);
+            resultContainer.appendChild(resultParagraph);
+        });
+    } 
+
+
+// Add click event listener to the button
+showIntervalPriceButton.addEventListener("click", renderIntervalPriceProduct);
+
+
+
+const getProductByName = (productName) => {
+    let productByName;
+    const productIndex = products.findIndex(item => item.name === productName);
+
+    if (productIndex !== -1) {
+        productByName = products.splice(productIndex, 1) [0];
+    }
+
+    return productByName;
+}
+
+const renderOrderedProduct = () => {
+
+    const orderProduct = prompt("Introduce name of product: ");
+
+    const orderedProduct = getProductByName(orderProduct);
+
+
+    const resultContainer = document.getElementById("orderedProductsList");
+    const resultParagraph = document.createElement('p');
+    const resultText = document.createTextNode(`Selected product: ${orderedProduct.category} ${orderedProduct.name} with a price of $${orderedProduct.price} from ${orderedProduct.originCountry}. Delivery to the store will be made within 14 days.`);
+
+resultParagraph.appendChild(resultText);
+    resultContainer.innerHTML = "";
+    resultContainer.appendChild(resultParagraph);
+}
+
+orderProductBtn.addEventListener('click', renderOrderedProduct);
+
+
+
 
