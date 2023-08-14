@@ -14,6 +14,7 @@
 
     <section>
         <h3>List of products in the warehouse</h3>
+
         <div id="productsList"></div>
         <button onclick="addNewProduct()">Add new product</button>
     </section>
@@ -23,7 +24,7 @@
     <section>
         <h3>Order products</h3>
         <div id="orderedProductsList"></div>
-        <button id = "orderProductBtn" onclick="getProductByName()">Select product</button>
+        <button id="orderProductBtn" onclick="getProductByName()">Select product</button>
     </section>
 
     <hr>
@@ -68,26 +69,37 @@
 
         <div>
             <label for="categoryFilter">Filter by Category:</label>
-    <select id="categoryFilter">
-        <option value="">All</option>
-        <option value="womenClothes">Women Clothes</option>
-        <option value="menClothes">Men Clothes</option>
-        <option value="babyClothes">Baby Clothes</option>
-    </select>
+            <select id="categoryFilter">
+                <option value="">All</option>
+                <option value="womenClothes">Women Clothes</option>
+                <option value="menClothes">Men Clothes</option>
+                <option value="babyClothes">Baby Clothes</option>
+            </select>
         </div>
-<br>
+        <br>
         <div>
             <label for="categoryFilter">Filter by Origin Country:</label>
-    <select id="categoryFilter">
-        <option value="">All</option>
-        <option value="France">France</option>
-        <option value="Italy">Italy</option>
-        <option value="China">China</option>
-    </select>
+            <select id="categoryFilter">
+                <option value="">All</option>
+                <option value="France">France</option>
+                <option value="Italy">Italy</option>
+                <option value="China">China</option>
+            </select>
         </div>
     </section>
 
+    <hr>
 
+    <section>
+        <div>
+            <h3>Filter section</h3>
+            <div>
+                <p>Filter products by category:</p>
+                <button>Search</button>
+                <div id = "resultFilterByCategory "></div>
+            </div>
+        </div>
+    </section>
 
     <script src="script.js"></script>
 </body>

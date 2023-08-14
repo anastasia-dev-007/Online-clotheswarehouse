@@ -50,6 +50,18 @@ const renderProducts = () => {
     const tableHeaderElement = document.createElement("tr");
     const columns = ["No", "Product Name", "Category", "Price", "Origin Country", "Actions"];
 
+    //Added style to the table
+    tableElement.setAttribute('class', 'class1');
+    const styleElement = document.createElement('style');
+    styleElement.innerHTML = `
+.class1 {
+    border: 1px solid;
+    background-color: blue;
+}
+`;
+    document.head.appendChild(styleElement);
+
+
     // Create table header cells
     columns.forEach(column => {
         const thElement = document.createElement("th");
@@ -208,29 +220,29 @@ showMostExpensiveButton.addEventListener("click", renderMostExpensiveProduct);
 // Function to find cheapest product
 const findCheapestProduct = (products) => {
     let cheapestProduct = products[0];
-    
+
     products.forEach(product => {
-        if(product.price < cheapestProduct.price) {
+        if (product.price < cheapestProduct.price) {
             cheapestProduct = product;
         }
     });
     return cheapestProduct;
-}    
+}
 
 
 // Function to render the cheapest product
 const renderCheapestProduct = () => {
-        // Get the cheapest product
-const cheapestProduct = findCheapestProduct(products);
+    // Get the cheapest product
+    const cheapestProduct = findCheapestProduct(products);
 
-const resultContainer = document.getElementById("resultCheapestProduct");
-const resultParagraph = document.createElement("p");
-const resultText = document.createTextNode(`Cheapest product is: ${cheapestProduct.name} with a price of $${cheapestProduct.price}`);
-resultParagraph.appendChild(resultText);
+    const resultContainer = document.getElementById("resultCheapestProduct");
+    const resultParagraph = document.createElement("p");
+    const resultText = document.createTextNode(`Cheapest product is: ${cheapestProduct.name} with a price of $${cheapestProduct.price}`);
+    resultParagraph.appendChild(resultText);
 
-// Clear the container and add the result
-resultContainer.innerHTML = "";
-resultContainer.appendChild(resultParagraph);
+    // Clear the container and add the result
+    resultContainer.innerHTML = "";
+    resultContainer.appendChild(resultParagraph);
 }
 
 // Add click event listener to the button
@@ -254,15 +266,15 @@ const renderIntervalPriceProduct = () => {
 
     const resultContainer = document.getElementById("resultIntervalPriceProduct");
     resultContainer.innerHTML = ""; // Clear the container
-    
-        // Create and append a paragraph for each product in the interval
-        intervalPriceProducts.forEach(product => {
-            const resultParagraph = document.createElement("li");
-            const resultText = document.createTextNode(`${product.name} with a price of $${product.price}`);
-            resultParagraph.appendChild(resultText);
-            resultContainer.appendChild(resultParagraph);
-        });
-    } 
+
+    // Create and append a paragraph for each product in the interval
+    intervalPriceProducts.forEach(product => {
+        const resultParagraph = document.createElement("li");
+        const resultText = document.createTextNode(`${product.name} with a price of $${product.price}`);
+        resultParagraph.appendChild(resultText);
+        resultContainer.appendChild(resultParagraph);
+    });
+}
 
 
 // Add click event listener to the button
@@ -275,7 +287,7 @@ const getProductByName = (productName) => {
     const productIndex = products.findIndex(item => item.name === productName);
 
     if (productIndex !== -1) {
-        productByName = products.splice(productIndex, 1) [0];
+        productByName = products.splice(productIndex, 1)[0];
     }
 
     return productByName;
@@ -292,12 +304,20 @@ const renderOrderedProduct = () => {
     const resultParagraph = document.createElement('p');
     const resultText = document.createTextNode(`Selected product: ${orderedProduct.category} ${orderedProduct.name} with a price of $${orderedProduct.price} from ${orderedProduct.originCountry}. Delivery to the store will be made within 14 days.`);
 
-resultParagraph.appendChild(resultText);
+    resultParagraph.appendChild(resultText);
     resultContainer.innerHTML = "";
     resultContainer.appendChild(resultParagraph);
 }
 
 orderProductBtn.addEventListener('click', renderOrderedProduct);
+
+
+
+
+
+
+
+
 
 
 
