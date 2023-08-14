@@ -55,8 +55,10 @@ const renderProducts = () => {
     const styleElement = document.createElement('style');
     styleElement.innerHTML = `
 .class1 {
-    border: 1px solid;
-    background-color: blue;
+    border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+  background-color: #dddddd;
 }
 `;
     document.head.appendChild(styleElement);
@@ -138,9 +140,7 @@ const addNewProduct = () => {
 
     // Update and render the product list
     renderProducts();
-
-    //RADU, DAR E OK ASA CA DUPA REFRESH SE STERGE NOUL PRODUS? NU AR TREBUI EL SA RAMANA?
-}
+ }
 
 
 // Function to edit a product's information
@@ -214,7 +214,7 @@ const renderMostExpensiveProduct = () => {
 }
 
 // Add click event listener to the button
-showMostExpensiveButton.addEventListener("click", renderMostExpensiveProduct);
+// showMostExpensiveButton.addEventListener("click", renderMostExpensiveProduct);
 
 
 // Function to find cheapest product
@@ -246,7 +246,7 @@ const renderCheapestProduct = () => {
 }
 
 // Add click event listener to the button
-showCheapestButton.addEventListener("click", renderCheapestProduct);
+// showCheapestButton.addEventListener("click", renderCheapestProduct);
 
 
 
@@ -309,7 +309,7 @@ const renderOrderedProduct = () => {
     resultContainer.appendChild(resultParagraph);
 }
 
-orderProductBtn.addEventListener('click', renderOrderedProduct);
+// orderProductBtn.addEventListener('click', renderOrderedProduct);
 
 
 

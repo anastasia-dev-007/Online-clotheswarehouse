@@ -24,7 +24,7 @@
     <section>
         <h3>Order products</h3>
         <div id="orderedProductsList"></div>
-        <button id="orderProductBtn" onclick="getProductByName()">Select product</button>
+        <button id="orderProductBtn" onclick="renderOrderedProduct()">Select product</button>
     </section>
 
     <hr>
@@ -33,8 +33,8 @@
         <header>
             <h3>Most expensive product in the warehouse</h3>
         </header>
-        <button onclick="findMostExpensiveProduct()" id="showMostExpensiveButton">Show Most Expensive
-            Product</button> <!--dar lucreaza si fara atributul "onclick". De ce?-->
+        <button onclick="renderMostExpensiveProduct()" id="showMostExpensiveButton">Show Most Expensive
+            Product</button>
         <div id="resultMostExpensiveProduct"></div>
     </section>
 
@@ -45,7 +45,7 @@
             <h3>Cheapest product in the warehouse</h3>
         </header>
 
-        <button id="showCheapestButton">Show Cheapest Product</button>
+        <button onclick ="renderCheapestProduct()" id="showCheapestButton">Show Cheapest Product</button>
         <div id="resultCheapestProduct"></div>
     </section>
 
