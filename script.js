@@ -48,20 +48,25 @@ const renderProducts = () => {
     const productsListContainer = document.getElementById("productsList");
     const tableElement = document.createElement("table");
     const tableHeaderElement = document.createElement("tr");
-    const columns = ["No", "Product Name", "Category", "Price", "Origin Country", "Actions"];
+    const columns = ["No", "Product Name", "Category", "Price", "Origin Country", "Actions", "Order"];
 
-    //Added style to the table
-    tableElement.setAttribute('class', 'class1');
-    const styleElement = document.createElement('style');
-    styleElement.innerHTML = `
-.class1 {
-    border-collapse: collapse;
-  border-spacing: 0;
-  border: 1px solid #ddd;
-  background-color: #dddddd;
-}
-`;
-    document.head.appendChild(styleElement);
+    //Added style to the table by Radu's feedback
+    //     tableElement.setAttribute('class', 'class1');
+    //     const styleElement = document.createElement('style');
+    //     styleElement.innerHTML = `
+    // .class1 {
+    //     border-collapse: collapse;
+    //   border-spacing: 0;
+    //   border: 1px solid #ddd;
+    //   background-color: #dddddd;
+    // }`;
+    //     document.head.appendChild(styleElement);
+
+
+    // Add Bootstrap classes to the table
+    tableElement.classList.add("table", "table-hover");//Radu, nu mi-a reusit sa aplic bootstrap ca in exemplu din w3school: https://www.w3schools.com/bootstrap5/tryit.asp?filename=trybs_table_hover&stacked=h
+    //OR  tableElement.className = "table table-hover";
+
 
 
     // Create table header cells
@@ -94,17 +99,24 @@ const renderProducts = () => {
             tableData.appendChild(tabelDataText);
             tableRow.appendChild(tableData);
         }
-        // Create cell with edit and delete buttons
+        // Create cell with edit and delete buttons + added order btn
         const actionCell = document.createElement("td");
         const editButton = document.createElement("button");
         const editButtonText = document.createTextNode("Modify");
         const deleteButton = document.createElement("button");
         const deleteButtonText = document.createTextNode("Delete");
 
+        const orderCell = document.createElement("td");
+        const orderButton = document.createElement("button");
+        const orderButtonText = document.createTextNode("Order");
+
         editButton.appendChild(editButtonText);
         deleteButton.appendChild(deleteButtonText);
+        orderButton.appendChild(orderButtonText);
         actionCell.appendChild(editButton);
         actionCell.appendChild(deleteButton);
+        orderCell.appendChild(orderButton);
+
 
         // Add event listeners to buttons
         editButton.addEventListener("click", () => {
@@ -113,7 +125,22 @@ const renderProducts = () => {
         deleteButton.addEventListener("click", () => {
             deleteProduct(product);
         });
+
+        orderButton.addEventListener("click", () => {
+            orderProduct(product);
+        });
+
+        orderButton.addEventListener('click', (event) => {
+            const clickedButton = event.target;
+            const tableRow = clickedButton.parentElement.parentElement;
+            const productName = tableRow.querySelector('td:nth-child(2)').textContent;
+            const product = products.find(p => p.name === productName);
+
+            orderProduct(product);
+        });
+
         tableRow.appendChild(actionCell);
+        tableRow.appendChild(orderCell);
 
         tableElement.appendChild(tableRow);
     });
@@ -140,7 +167,7 @@ const addNewProduct = () => {
 
     // Update and render the product list
     renderProducts();
- }
+}
 
 
 // Function to edit a product's information
@@ -157,6 +184,7 @@ const editProduct = ({ name, category, price, originCountry }) => {
         originCountry: newOriginCountry,
     };
 
+
     // Find the product index and update the array
     const productIndex = products.findIndex(product => product.name === name);
     products.splice(productIndex, 1, newProduct);
@@ -167,6 +195,7 @@ const editProduct = ({ name, category, price, originCountry }) => {
     // Function to delete a product
 }
 
+// Function to delete a product
 const deleteProduct = ({ name }) => {
     // Confirm user's intention to delete
     const canDelete = confirm("Are you sure you want to delete this product?")
@@ -180,8 +209,28 @@ const deleteProduct = ({ name }) => {
     }
 }
 
-renderProducts();
+// RADU HELP ME PLEASE HERE!
+//Working on functionality of ordering a product
+const orderedProducts = [];//here will be stored ordered products from the main table
 
+
+//Function to order products and insert them in separate table
+const orderProduct = (product) => {
+    const productIndex = products.findIndex(p => p.name === product.name);    // Find the index of the selected product in the 'products' array
+
+    const orderedProduct = products.splice(productIndex, 1)[0]; // Remove the ordered product from the 'products' array 
+    orderedProducts.push(orderedProduct);    // Add the ordered product to the 'orderedProducts' array
+
+
+    // Move the table row from the main table to the ordered products table
+    
+
+    renderOrderedProducts();
+
+    renderProducts();
+}
+
+renderProducts();
 
 
 
@@ -249,7 +298,6 @@ const renderCheapestProduct = () => {
 // showCheapestButton.addEventListener("click", renderCheapestProduct);
 
 
-
 // Function to find interval price product
 const identifyIntervalProducts = (products, minPrice, maxPrice) => {
     return products.filter((item) => item.price >= minPrice && item.price <= maxPrice);
@@ -281,7 +329,6 @@ const renderIntervalPriceProduct = () => {
 showIntervalPriceButton.addEventListener("click", renderIntervalPriceProduct);
 
 
-
 const getProductByName = (productName) => {
     let productByName;
     const productIndex = products.findIndex(item => item.name === productName);
@@ -293,32 +340,63 @@ const getProductByName = (productName) => {
     return productByName;
 }
 
-const renderOrderedProduct = () => {
+//OLD VERSION OF ORDERS
+// const renderOrderedProduct = () => {
 
-    const orderProduct = prompt("Introduce name of product: ");
+//     const orderProduct = prompt("Introduce name of product: ");
+//     const orderedProduct = getProductByName(orderProduct);
+//     const resultContainer = document.getElementById("orderedProductsList");
+//     const resultParagraph = document.createElement('p');
+//     const resultText = document.createTextNode(`Selected product: ${orderedProduct.category} ${orderedProduct.name} with a price of $${orderedProduct.price} from ${orderedProduct.originCountry}. Delivery to the store will be made within 14 days.`);
 
-    const orderedProduct = getProductByName(orderProduct);
+//     resultParagraph.appendChild(resultText);
+//     resultContainer.innerHTML = "";
+//     resultContainer.appendChild(resultParagraph);
+// }
 
 
-    const resultContainer = document.getElementById("orderedProductsList");
-    const resultParagraph = document.createElement('p');
-    const resultText = document.createTextNode(`Selected product: ${orderedProduct.category} ${orderedProduct.name} with a price of $${orderedProduct.price} from ${orderedProduct.originCountry}. Delivery to the store will be made within 14 days.`);
 
-    resultParagraph.appendChild(resultText);
-    resultContainer.innerHTML = "";
-    resultContainer.appendChild(resultParagraph);
+//RADU HELP PLEASE!
+const renderOrderedProducts = () => {
+    const orderedProductsContainer = document.getElementById("orderedProductsList");
+    const orderedTable = document.createElement("table");
+    const orderedTableHeader = document.createElement("tr");
+    const orderedColumns = ["Product Name", "Category", "Price", "Origin Country"];
+
+    // Create ordered products table header cells
+    orderedColumns.forEach(column => {
+        const thElement = document.createElement("th");
+        const thText = document.createTextNode(column);
+        thElement.appendChild(thText);
+        orderedTableHeader.appendChild(thElement);
+    });
+
+    orderedTable.appendChild(orderedTableHeader);
+
+    // Create table rows for each ordered product
+    orderedProducts.forEach(orderedProduct => {
+        const orderedTableRow = document.createElement("tr");
+
+        // Populate table cells with ordered product data
+        orderedColumns.forEach(column => {
+            const tableData = document.createElement("td");
+            const tableDataText = document.createTextNode(orderedProduct[column.toLowerCase()]);//Radu, de ce aici daca scot toLowerCase atunci nici price nici category?)
+            tableData.appendChild(tableDataText);
+            orderedTableRow.appendChild(tableData);
+        });
+
+        orderedTable.appendChild(orderedTableRow);
+    });
+
+    // Update the ordered products container
+    orderedProductsContainer.innerHTML = "";
+    orderedProductsContainer.appendChild(orderedTable);
 }
 
-// orderProductBtn.addEventListener('click', renderOrderedProduct);
 
+// Update the product list container
+productsListContainer.innerHTML = "";
+productsListContainer.appendChild(tableElement);
 
-
-
-
-
-
-
-
-
-
-
+// Update the ordered products container
+renderOrderedProducts();
