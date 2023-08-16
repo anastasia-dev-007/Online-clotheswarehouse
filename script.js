@@ -52,26 +52,13 @@ const tableElement = document.createElement("table");
 const renderProducts = () => {
     const productsListContainer = document.getElementById("productsList");
     const tableElement = document.createElement("table");
+    const tableBodyElement = document.createElement("tbody");
     const tableHeaderElement = document.createElement("tr");
     const columns = ["No", "Product Name", "Category", "Price", "Origin Country", "Actions", "Order"];
 
-    //Added style to the table by Radu's feedback
-    //     tableElement.setAttribute('class', 'class1');
-    //     const styleElement = document.createElement('style');
-    //     styleElement.innerHTML = `
-    // .class1 {
-    //     border-collapse: collapse;
-    //   border-spacing: 0;
-    //   border: 1px solid #ddd;
-    //   background-color: #dddddd;
-    // }`;
-    //     document.head.appendChild(styleElement);
-
 
     // Add Bootstrap classes to the table
-    tableElement.classList.add("table", "table-hover");//Radu, nu mi-a reusit sa aplic bootstrap ca in exemplu din w3school: https://www.w3schools.com/bootstrap5/tryit.asp?filename=trybs_table_hover&stacked=h
-    //OR  tableElement.className = "table table-hover";
-
+    tableElement.classList.add("table", "table-hover");
 
 
     // Create table header cells
@@ -82,7 +69,7 @@ const renderProducts = () => {
         tableHeaderElement.appendChild(thElement);
     });//acum noi in tableHeaderCells vom avea o lista
 
-    tableElement.appendChild(tableHeaderElement);
+    tableBodyElement.appendChild(tableHeaderElement);
 
     // Create table rows for each product
     let orderNumber = 1; // Initialize the order number counter
@@ -135,23 +122,15 @@ const renderProducts = () => {
             orderProduct(product);
         });
 
-        orderButton.addEventListener('click', (event) => {
-            const clickedButton = event.target;
-            const tableRow = clickedButton.parentElement.parentElement;
-            const productName = tableRow.querySelector('td:nth-child(2)').textContent;
-            const product = products.find(p => p.name === productName);
-
-            orderProduct(product);
-        });
-
         tableRow.appendChild(actionCell);
         tableRow.appendChild(orderCell);
 
-        tableElement.appendChild(tableRow);
+        tableBodyElement.appendChild(tableRow);
     });
 
     // Update the product list container
     productsListContainer.innerHTML = "";
+    tableElement.appendChild(tableBodyElement);
     productsListContainer.appendChild(tableElement);
 }
 
@@ -228,14 +207,12 @@ const orderProduct = (product) => {
 
 
     // Move the table row from the main table to the ordered products table
-    
+
 
     renderOrderedProducts();
 
     renderProducts();
 }
-
-renderProducts();
 
 
 
@@ -365,8 +342,12 @@ const getProductByName = (productName) => {
 const renderOrderedProducts = () => {
     const orderedProductsContainer = document.getElementById("orderedProductsList");
     const orderedTable = document.createElement("table");
+    const orderedTableBody = document.createElement("tbody");
     const orderedTableHeader = document.createElement("tr");
-    const orderedColumns = ["Product Name", "Category", "Price", "Origin Country"];
+    const orderedColumns = ["Product Name", "Category", "Price", "Origin Country", "Remove Item"];
+    const productFields = ["name", "category", "price", "originCountry"];
+
+    orderedTable.setAttribute("class", "table table-hover")//Bootstrap5
 
     // Create ordered products table header cells
     orderedColumns.forEach(column => {
@@ -376,25 +357,39 @@ const renderOrderedProducts = () => {
         orderedTableHeader.appendChild(thElement);
     });
 
-    orderedTable.appendChild(orderedTableHeader);
+    orderedTableBody.appendChild(orderedTableHeader);
 
     // Create table rows for each ordered product
     orderedProducts.forEach(orderedProduct => {
         const orderedTableRow = document.createElement("tr");
 
         // Populate table cells with ordered product data
-        orderedColumns.forEach(column => {
+        productFields.forEach(column => {
             const tableData = document.createElement("td");
-            const tableDataText = document.createTextNode(orderedProduct[column.toLowerCase()]);//Radu, de ce aici daca scot toLowerCase atunci nici price nici category?)
+            const tableDataText = document.createTextNode(orderedProduct[column]);
             tableData.appendChild(tableDataText);
             orderedTableRow.appendChild(tableData);
         });
 
-        orderedTable.appendChild(orderedTableRow);
+        //Create remove button
+        const actionCell = document.createElement("td");
+        const removeButton = document.createElement("button");
+        const removeButtonText = document.createTextNode("Remove");
+        removeButton.appendChild(removeButtonText);
+        actionCell.appendChild(removeButton);
+
+        // Add event listeners to buttons
+        removeButton.addEventListener("click", () => {
+            removeProduct(orderedProduct);
+        });
+
+        orderedTableRow.appendChild(actionCell);
+        orderedTableBody.appendChild(orderedTableRow);
     });
 
     // Update the ordered products container
     orderedProductsContainer.innerHTML = "";
+    orderedTable.appendChild(orderedTableBody);
     orderedProductsContainer.appendChild(orderedTable);
 }
 
@@ -407,32 +402,42 @@ productsListContainer.appendChild(tableElement);
 renderOrderedProducts();
 
 
-//Buy and Cancel 
+//Function to remove item from orders
+const removeProduct = (orderedProduct) => {
+    const orderedProductIndex = orderedProducts.findIndex(product => product.name === orderedProduct.name);
+       orderedProducts.splice(orderedProductIndex, 1);
+       products.push(orderedProduct);
 
+       renderOrderedProducts();
+       renderProducts();
+    }
+
+
+//Buy Button 
 const buyOrderedProducts = () => {
     //clear content here, because else message is displayed multiple time per each click
     const orderedProductsAlert = document.getElementById("orderedProductsList");
     orderedProductsAlert.innerHTML = "";
 
-if(orderedProducts.length === 0) {
-    const orderedProductsAlert = document.getElementById("orderedProductsList");
-    const alert = document.createElement('p');
-    const alertText = document.createTextNode("The selected products could not be found. Please make sure to choose products before proceeding.");
-    alert.appendChild(alertText);
-    orderedProductsAlert.appendChild(alert);
-    alert.style.color = "red";//set color on element (!to remember to set styles on element not on "alertText")
+    if (orderedProducts.length === 0) {
+        const orderedProductsAlert = document.getElementById("orderedProductsList");
+        const alert = document.createElement('p');
+        const alertText = document.createTextNode("The selected products could not be found. Please make sure to choose products before proceeding.");
+        alert.appendChild(alertText);
+        orderedProductsAlert.appendChild(alert);
+        alert.style.color = "red";//set color on element (!to remember to set styles on element not on "alertText")
 
-} else {
-    orderedProducts.length === 0;//cleared the array
+    } else {
+        orderedProducts.length === 0;//cleared the array
 
-     const orderedProductsAlert = document.getElementById("orderedProductsList");
-    orderedProductsAlert.innerHTML = "";
-    const alert = document.createElement('p');
-    const alertText = document.createTextNode("Your order has been successfully placed! You can expect to receive your items within 14 days. Payment will be processed upon delivery.");
-    alert.appendChild(alertText);
-    orderedProductsAlert.appendChild(alert);
-    alert.style.color = "green";
-}
+        const orderedProductsAlert = document.getElementById("orderedProductsList");
+        orderedProductsAlert.innerHTML = "";
+        const alert = document.createElement('p');
+        const alertText = document.createTextNode("Your order has been successfully placed! You can expect to receive your items within 14 days. Payment will be processed upon delivery.");
+        alert.appendChild(alertText);
+        orderedProductsAlert.appendChild(alert);
+        alert.style.color = "green";
+    }
 }
 
 
