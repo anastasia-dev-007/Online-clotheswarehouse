@@ -43,6 +43,11 @@ const products = [
 ];
 
 
+//declared constants for "Buy" btn to function
+const productsListContainer = document.getElementById("productsList");
+const tableElement = document.createElement("table");
+
+
 // Function to render the list of products
 const renderProducts = () => {
     const productsListContainer = document.getElementById("productsList");
@@ -405,13 +410,30 @@ renderOrderedProducts();
 //Buy and Cancel 
 
 const buyOrderedProducts = () => {
+    //clear content here, because else message is displayed multiple time per each click
+    const orderedProductsAlert = document.getElementById("orderedProductsList");
+    orderedProductsAlert.innerHTML = "";
+
 if(orderedProducts.length === 0) {
     const orderedProductsAlert = document.getElementById("orderedProductsList");
     const alert = document.createElement('p');
-    const alertText = document.createTextNode("No products selected!");
+    const alertText = document.createTextNode("The selected products could not be found. Please make sure to choose products before proceeding.");
     alert.appendChild(alertText);
     orderedProductsAlert.appendChild(alert);
+    alert.style.color = "red";//set color on element (!to remember to set styles on element not on "alertText")
+
+} else {
+    orderedProducts.length === 0;//cleared the array
+
+     const orderedProductsAlert = document.getElementById("orderedProductsList");
+    orderedProductsAlert.innerHTML = "";
+    const alert = document.createElement('p');
+    const alertText = document.createTextNode("Your order has been successfully placed! You can expect to receive your items within 14 days. Payment will be processed upon delivery.");
+    alert.appendChild(alertText);
+    orderedProductsAlert.appendChild(alert);
+    alert.style.color = "green";
 }
 }
 
-buyOrderedProducts();
+
+renderProducts();
