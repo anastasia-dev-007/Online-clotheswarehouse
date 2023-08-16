@@ -400,3 +400,18 @@ productsListContainer.appendChild(tableElement);
 
 // Update the ordered products container
 renderOrderedProducts();
+
+
+//Buy and Cancel 
+
+const buyOrderedProducts = () => {
+if(orderedProducts.length === 0) {
+    const orderedProductsAlert = document.getElementById("orderedProductsList");
+    const alert = document.createElement('p');
+    const alertText = document.createTextNode("No products selected!");
+    alert.appendChild(alertText);
+    orderedProductsAlert.appendChild(alert);
+}
+}
+
+buyOrderedProducts();
