@@ -30,7 +30,6 @@ const products = [
         price: 100,
         originCountry: "France",
     },
-    // Additional products
     {
         name: "sweater",
         category: "Women Clothes",
@@ -67,7 +66,6 @@ const products = [
         price: 120,
         originCountry: "Spain",
     },
-    // Additional products
     {
         name: "blouse",
         category: "Women Clothes",
@@ -104,11 +102,28 @@ const products = [
         price: 30,
         originCountry: "Germany",
     },
-    // Add more clothes if necessary
+    {
+        name: "dress",
+        category: "Baby Clothes",
+        price: 350,
+        originCountry: "Germany",
+    },
+    {
+        name: "leggins",
+        category: "Woman Clothes",
+        price: 380,
+        originCountry: "Moldova",
+    },
+    {
+        name: "pants",
+        category: "Men Clothes",
+        price: 260,
+        originCountry: "Germany",
+    },
 ];
 
 
-//declared constants for "Buy" btn to function
+//Declared constants for "Buy" btn to function. Without this declaration btn didn't work
 const productsListContainer = document.getElementById("productsList");
 const tableElement = document.createElement("table");
 
@@ -218,7 +233,6 @@ const addNewProduct = () => {
     renderProducts(products);
 }
 
-
 // Function to edit a product's information
 const editProduct = ({ name, category, price, originCountry }) => {
     // Prompt user for new information
@@ -261,7 +275,6 @@ const deleteProduct = ({ name }) => {
 //Functionality of ordering a product
 const orderedProducts = [];//here will be stored ordered products from the main table
 
-
 //Function to order products and insert them in separate table
 const orderProduct = (product) => {
     const productIndex = products.findIndex(p => p.name === product.name);    // Find the index of the selected product in the 'products' array
@@ -274,18 +287,6 @@ const orderProduct = (product) => {
     renderOrderedProducts();
 
     renderProducts(products);
-}
-
-
-const getProductByName = (productName) => {
-    let productByName;
-    const productIndex = products.findIndex(item => item.name === productName);
-
-    if (productIndex !== -1) {
-        productByName = products.splice(productIndex, 1)[0];
-    }
-
-    return productByName;
 }
 
 const renderOrderedProducts = () => {
@@ -342,7 +343,6 @@ const renderOrderedProducts = () => {
     orderedProductsContainer.appendChild(orderedTable);
 }
 
-
 // Update the product list container
 productsListContainer.innerHTML = "";
 productsListContainer.appendChild(tableElement);
@@ -364,7 +364,7 @@ const removeProduct = (orderedProduct) => {
 
 //Buy Button 
 const buyOrderedProducts = () => {
-    //clear content here, because else message is displayed multiple time per each click
+    //clear content here, because else message is displayed multiple times per each click
     const orderedProductsAlert = document.getElementById("orderedProductsList");
     orderedProductsAlert.innerHTML = "";
 
@@ -377,7 +377,7 @@ const buyOrderedProducts = () => {
         alert.style.color = "red";//set color on element (!to remember to set styles on element not on "alertText")
 
     } else {
-        orderedProducts.length === 0;//cleared the array
+        orderedProducts.splice(0,orderedProducts.length);//cleared the array
 
         const orderedProductsAlert = document.getElementById("orderedProductsList");
         orderedProductsAlert.innerHTML = "";
@@ -391,150 +391,93 @@ const buyOrderedProducts = () => {
 renderProducts(products);
 
 
-
-
-//Filter options per each function
-
-// Filter by NAME
-const filterByName = () => {
-    const filterFormData = {
-        name: document.getElementById("byName").value,
-    }
-
-    const filteredByName = products.filter(product => {
-        let isAvailable = true;
-
-        if (filterFormData.name) {
-            isAvailable = product.name.toLowerCase().startsWith(filterFormData.name.toLowerCase());
-        }
-        return isAvailable;
-    });
-
-
-    renderProducts(filteredByName);
-}
-
-//Filter by INTERVAL PRICE
-const filterByInterval = () => {
-    const filterFormData = {
-        minPrice: document.getElementById("minPrice").value,
-        maxPrice: document.getElementById("maxPrice").value,
-    }
-
-    const filteredByInterval = products.filter(product => {
-        if (filterFormData.minPrice && filterFormData.maxPrice) {
-            return product.price >= filterFormData.minPrice && product.price <= filterFormData.maxPrice;
-        }
-        return true;
-    });
-    renderProducts(filteredByInterval);
-}
-
-
-//Filter by CATEGORY
-const filterByCategory = () => {
-    const filterFormData = {
-        category: document.getElementById("categoryFilter").value,
-    }
-
-    const filteredByCategory = products.filter(product => {
-        if (filterFormData.category) {
-            return product.category === filterFormData.category;
-        }
-        return true;
-    });
-
-
-    renderProducts(filteredByCategory);
-}
-
-document.getElementById("categoryFilter").addEventListener('change', filterByCategory);
-
-
-//Create a dropdown list for countries
+//Create a dropdown list for countries (developed this to avoid manual creation of options in index.html)
 const uniqueCountryList = [...new Set(products.map(product => product.originCountry))];//get unique list. I use map because it gives me acces to property of object product
 
 const originCountryList = document.getElementById("originCountry")
 originCountryList.innerHTML = "";//reset list
 
-//create option "All"
+//Create option "All"
 const allOption = document.createElement("option");
 allOption.textContent = "All";
 allOption.value = "";
 originCountryList.appendChild(allOption);
 
 
-//create rest options from the unique list
+//Create rest options from the unique list
 uniqueCountryList.forEach(country => {
     const option = document.createElement("option");
     option.textContent = country;
     option.value = country;
     originCountryList.appendChild(option);
-}
-);
+});
 
+//Filter section which contains interconnected filters that update each other as the user interacts with them
+const currentFilters = {
+    name: "",
+    minPrice: "",
+    maxPrice: "",
+    category: "",
+    originCountry: "",
+};
 
-//Filter by COUNTRY
-const filterByCountry = () => {
-    const filterFormData = {
-        originCountry: document.getElementById("originCountry").value,
-    }
-
-    const filteredByCountry = products.filter(product => {
-        if (filterFormData.originCountry) {
-            return product.originCountry === filterFormData.originCountry;
-        }
-        return true;
-    });
-
-    renderProducts(filteredByCountry);
-}
-
-document.getElementById("originCountry").addEventListener('change', filterByCountry);
-
-
-//FINAL FILTER which takes into consideration all criteria
-const filterProducts = () => {
-    //la inceput citim datele din formular
-    const filterFormData = {
-        name: document.getElementById("byName").value,
-        category: document.getElementById("categoryFilter").value,
-        originCountry: document.getElementById("originCountry").value,
-        minPrice: document.getElementById("minPrice").value,
-        maxPrice: document.getElementById("maxPrice").value,
-    }
-
-    const filteredProducts = products.filter(product => {
-
+const applyFilters = () => {
+    const filteredProducts = products.filter (product => {
         let isAvailable = true;
 
-        //trebuie sa verificam daca valoarea noastra (product) corespunde cu ceea ce e selectat in filtru
-        if (filterFormData.name) {//daca  numele produsului nostru incepe cu ceea ce avem aici e true, else e false 
-            isAvailable = product.name.toLowerCase().startsWith(filterFormData.name.toLowerCase());
+        if(currentFilters.name) {
+            isAvailable = product.name.toLowerCase().startsWith(currentFilters.name.toLowerCase());
         }
 
-        if (filterFormData.category) {
-            isAvailable = product.category === filterFormData.category;
+        if(currentFilters.minPrice && currentFilters.maxPrice) {
+            isAvailable = isAvailable && (product.price >= currentFilters.minPrice && product.price <= currentFilters.maxPrice)
         }
 
-        if (filterFormData.originCountry) {
-            isAvailable = product.originCountry === filterFormData.originCountry;
+        if (currentFilters.category) {
+            isAvailable = isAvailable && product.category === currentFilters.category;
         }
 
-        if (filterFormData.minPrice && filterFormData.maxPrice) {
-            return product.price >= filterFormData.minPrice && product.price <= filterFormData.maxPrice;
+        if (currentFilters.originCountry) {
+            isAvailable = isAvailable && product.originCountry === currentFilters.originCountry;
         }
 
         return isAvailable;
-
     });
-
-
     renderProducts(filteredProducts);
-}
+};
+
+//Adding event listeners (Radu, I know you recommended to avoid this method, but in this example I don't know how to apply first method)
+document.getElementById("byName").addEventListener("input", () => {
+    currentFilters.name = document.getElementById("byName").value;
+    applyFilters();
+});//explanation "currentFilters.name = document.getElementById("byName").value;" updates the name property of the currentFilters object by assigning the current value of the input field (i.e., what the user has typed) to the name property.
+//Then, after update, is called applyFilters();
+
+document.getElementById("minPrice").addEventListener("input", () => {
+    currentFilters.minPrice = document.getElementById("minPrice").value;
+    applyFilters();
+});
+
+document.getElementById("maxPrice").addEventListener("input", () => {
+    currentFilters.maxPrice = document.getElementById("maxPrice").value;
+    applyFilters();
+});
+
+document.getElementById("categoryFilter").addEventListener("change", () => {
+    currentFilters.category = document.getElementById("categoryFilter").value;
+    applyFilters();
+});
 
 
-//Reset filters
+document.getElementById("originCountry").addEventListener("change", () => {
+    currentFilters.originCountry = document.getElementById("originCountry").value;
+    applyFilters();
+});
+
+applyFilters();
+
+
+//Functionality: Reset filters
 const resetFilters = () => {
     // Reset the values of filter elements (if needed)
     document.getElementById("byName").value = "";
@@ -583,6 +526,87 @@ const showCheapestProduct = () => {
     renderProducts([cheapestProducts]);
 }
 
+
+
+
+
+//OTHER METHODS OF FILTERS WHICH I DEVELOPED, BUT THEN DECIDED TO MODIFY THEM. In lines below the filters were working independently, reseting other filters when we moved to them. I kept events declarations in index.html which were used for below lines of code
+
+//Filter options per each function
+
+// // Filter by NAME
+// const filterByName = () => {
+//     const filterFormData = {
+//         name: document.getElementById("byName").value,
+//     }
+
+//     const filteredByName = products.filter(product => {
+//         let isAvailable = true;
+
+//         if (filterFormData.name) {
+//             isAvailable = product.name.toLowerCase().startsWith(filterFormData.name.toLowerCase());
+//         }
+//         return isAvailable;
+//     });
+
+
+//     renderProducts(filteredByName);
+// }
+
+// //Filter by INTERVAL PRICE
+// const filterByInterval = () => {
+//     const filterFormData = {
+//         minPrice: document.getElementById("minPrice").value,
+//         maxPrice: document.getElementById("maxPrice").value,
+//     }
+
+//     const filteredByInterval = products.filter(product => {
+//         if (filterFormData.minPrice && filterFormData.maxPrice) {
+//             return product.price >= filterFormData.minPrice && product.price <= filterFormData.maxPrice;
+//         }
+//         return true;
+//     });
+//     renderProducts(filteredByInterval);
+// }
+
+
+// //Filter by CATEGORY
+// const filterByCategory = () => {
+//     const filterFormData = {
+//         category: document.getElementById("categoryFilter").value,
+//     }
+
+//     const filteredByCategory = products.filter(product => {
+//         if (filterFormData.category) {
+//             return product.category === filterFormData.category;
+//         }
+//         return true;
+//     });
+
+
+//     renderProducts(filteredByCategory);
+// }
+
+// document.getElementById("categoryFilter").addEventListener('change', filterByCategory);
+
+
+// //Filter by COUNTRY
+// const filterByCountry = () => {
+//     const filterFormData = {
+//         originCountry: document.getElementById("originCountry").value,
+//     }
+
+//     const filteredByCountry = products.filter(product => {
+//         if (filterFormData.originCountry) {
+//             return product.originCountry === filterFormData.originCountry;
+//         }
+//         return true;
+//     });
+
+//     renderProducts(filteredByCountry);
+// }
+
+// document.getElementById("originCountry").addEventListener('change', filterByCountry);
 
 
 
