@@ -2,105 +2,105 @@
 const products = [
     {
         name: "dress",
-        category: "womenClothes",
+        category: "Women Clothes",
         price: 300,
         originCountry: "Italy",
     },
     {
         name: "coat",
-        category: "womenClothes",
+        category: "Women Clothes",
         price: 800,
         originCountry: "France",
     },
     {
         name: "jeans",
-        category: "menClothes",
+        category: "Men Clothes",
         price: 700,
         originCountry: "Italy",
     },
     {
         name: "jacket",
-        category: "menClothes",
+        category: "Men Clothes",
         price: 500,
         originCountry: "Italy",
     },
     {
         name: "romper",
-        category: "babyClothes",
+        category: "Baby Clothes",
         price: 100,
         originCountry: "France",
     },
     // Additional products
     {
         name: "sweater",
-        category: "womenClothes",
+        category: "Women Clothes",
         price: 400,
         originCountry: "USA",
     },
     {
         name: "shirt",
-        category: "menClothes",
+        category: "Men Clothes",
         price: 250,
         originCountry: "England",
     },
     {
         name: "onesie",
-        category: "babyClothes",
+        category: "Baby Clothes",
         price: 80,
         originCountry: "Germany",
     },
     {
         name: "skirt",
-        category: "womenClothes",
+        category: "Women Clothes",
         price: 220,
         originCountry: "France",
     },
     {
         name: "tie",
-        category: "menClothes",
+        category: "Men Clothes",
         price: 75,
         originCountry: "Italy",
     },
     {
         name: "bodysuit",
-        category: "babyClothes",
+        category: "Baby Clothes",
         price: 120,
         originCountry: "Spain",
     },
     // Additional products
     {
         name: "blouse",
-        category: "womenClothes",
+        category: "Women Clothes",
         price: 180,
         originCountry: "Spain",
     },
     {
         name: "suit",
-        category: "menClothes",
+        category: "Men Clothes",
         price: 900,
         originCountry: "Italy",
     },
     {
         name: "socks",
-        category: "babyClothes",
+        category: "Baby Clothes",
         price: 15,
         originCountry: "USA",
     },
     {
         name: "jumpsuit",
-        category: "womenClothes",
+        category: "Women Clothes",
         price: 350,
         originCountry: "France",
     },
     {
         name: "vest",
-        category: "menClothes",
+        category: "Men Clothes",
         price: 120,
         originCountry: "England",
     },
     {
         name: "hat",
-        category: "babyClothes",
+        category: "Baby Clothes",
         price: 30,
         originCountry: "Germany",
     },
@@ -258,8 +258,7 @@ const deleteProduct = ({ name }) => {
     }
 }
 
-// RADU HELP ME PLEASE HERE!
-//Working on functionality of ordering a product
+//Functionality of ordering a product
 const orderedProducts = [];//here will be stored ordered products from the main table
 
 
@@ -272,8 +271,6 @@ const orderProduct = (product) => {
 
 
     // Move the table row from the main table to the ordered products table
-
-
     renderOrderedProducts();
 
     renderProducts(products);
@@ -391,8 +388,6 @@ const buyOrderedProducts = () => {
         alert.style.color = "green";
     }
 }
-
-
 renderProducts(products);
 
 
