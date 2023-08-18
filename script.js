@@ -49,7 +49,7 @@ const tableElement = document.createElement("table");
 
 
 // Function to render the list of products
-const renderProducts = () => {
+const renderProducts = (products) => {
     const productsListContainer = document.getElementById("productsList");
     const tableElement = document.createElement("table");
     const tableBodyElement = document.createElement("tbody");
@@ -150,7 +150,7 @@ const addNewProduct = () => {
     });
 
     // Update and render the product list
-    renderProducts();
+    renderProducts(products);
 }
 
 
@@ -174,7 +174,7 @@ const editProduct = ({ name, category, price, originCountry }) => {
     products.splice(productIndex, 1, newProduct);
 
     // Update and render the product list
-    renderProducts();
+    renderProducts(products);
 
     // Function to delete a product
 }
@@ -189,7 +189,7 @@ const deleteProduct = ({ name }) => {
         products.splice(productIndex, 1);
 
         // Update and render the user list
-        renderProducts();
+        renderProducts(products);
     }
 }
 
@@ -211,7 +211,7 @@ const orderProduct = (product) => {
 
     renderOrderedProducts();
 
-    renderProducts();
+    renderProducts(products);
 }
 
 
@@ -322,23 +322,6 @@ const getProductByName = (productName) => {
     return productByName;
 }
 
-//OLD VERSION OF ORDERS
-// const renderOrderedProduct = () => {
-
-//     const orderProduct = prompt("Introduce name of product: ");
-//     const orderedProduct = getProductByName(orderProduct);
-//     const resultContainer = document.getElementById("orderedProductsList");
-//     const resultParagraph = document.createElement('p');
-//     const resultText = document.createTextNode(`Selected product: ${orderedProduct.category} ${orderedProduct.name} with a price of $${orderedProduct.price} from ${orderedProduct.originCountry}. Delivery to the store will be made within 14 days.`);
-
-//     resultParagraph.appendChild(resultText);
-//     resultContainer.innerHTML = "";
-//     resultContainer.appendChild(resultParagraph);
-// }
-
-
-
-//RADU HELP PLEASE!
 const renderOrderedProducts = () => {
     const orderedProductsContainer = document.getElementById("orderedProductsList");
     const orderedTable = document.createElement("table");
@@ -405,12 +388,12 @@ renderOrderedProducts();
 //Function to remove item from orders
 const removeProduct = (orderedProduct) => {
     const orderedProductIndex = orderedProducts.findIndex(product => product.name === orderedProduct.name);
-       orderedProducts.splice(orderedProductIndex, 1);
-       products.push(orderedProduct);
+    orderedProducts.splice(orderedProductIndex, 1);
+    products.push(orderedProduct);
 
-       renderOrderedProducts();
-       renderProducts();
-    }
+    renderOrderedProducts();
+    renderProducts(products);
+}
 
 
 //Buy Button 
@@ -441,4 +424,50 @@ const buyOrderedProducts = () => {
 }
 
 
-renderProducts();
+renderProducts(products);
+
+//Final filter function
+const filterProducts = () => {
+    //la inceput citim datele din formular
+    const filterFormData = {
+        name: "j", //document.getElementById("byName").form.elements.name.value
+        category: null, //document.getElementById("categoryFilter")form.elements.category.value
+    }
+
+    const filteredProducts = products.filter(product => {
+
+        let isAvailable = true;
+
+        //trebuie sa verificam daca valoarea noastra (product) corespunde cu ceea ce e selectat in filtru
+        if (filterFormData.name) {//daca  numele produsului nostru incepe cu ceea ce avem aici e true, else e false 
+            isAvailable = product.name.toLowerCase().startsWith(filterFormData.name.toLowerCase());
+        }
+
+        if (filterFormData.category) {
+            isAvailable = product.category === filterFormData.category;
+
+        }
+
+        //continuam asa pentru fiecare
+        return isAvailable;
+    });
+
+    console.log(filteredProducts); //doar ca acum trebuie sa afisam constanta filteredProducts in tabelul initial dupa ce dam click pe filter
+
+    renderProducts(filteredProducts);
+}
+
+
+//const filterFormData = {
+    // name: document.getElementById("byName").form.elements.name.value,
+    // minPrice: document.getElementById("categoryFilter")form.elements.minPrice.value,
+
+    //maxPrice : document.getElementById("categoryFilter")form.elements.minPrice.value,
+
+    // if (filterFormData.minprice) {
+    //     isAvailable = product.category === filterFormData.category;
+
+
+    //item.price >=minprice && item.price <= maxPrice
+    // }
+

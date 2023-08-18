@@ -35,47 +35,22 @@
 
     <hr>
 
-    <section>
-        <header>
-            <h3>Most expensive product in the warehouse</h3>
-        </header>
-        <button onclick="renderMostExpensiveProduct()" id="showMostExpensiveButton">Show Most Expensive
-            Product</button>
-        <div id="resultMostExpensiveProduct"></div>
-    </section>
 
-    <hr>
-
-    <section>
-        <header>
-            <h3>Cheapest product in the warehouse</h3>
-        </header>
-
-        <button onclick ="renderCheapestProduct()" id="showCheapestButton">Show Cheapest Product</button>
-        <div id="resultCheapestProduct"></div>
-    </section>
-
-    <hr>
-
-    <section>
-        <header>
-            <h3>Product between a price interval</h3>
-        </header>
-
-        <button id="showIntervalPriceButton">Show product with price between interval</button>
-        <div id="resultIntervalPriceProduct"></div>
-    </section>
-
-    <hr>
 
     <section>
         <header>
             <h3>Filter section</h3>
         </header>
+        <div>
+            <label>Search by name: </label>
+            <input id = "byName" type="text" name = "byName"/>
+        </div>
+
+        </br>
 
         <div>
             <label for="categoryFilter">Filter by Category:</label>
-            <select id="categoryFilter">
+            <select name = "category" id="categoryFilter">
                 <option value="">All</option>
                 <option value="womenClothes">Women Clothes</option>
                 <option value="menClothes">Men Clothes</option>
@@ -84,8 +59,8 @@
         </div>
         <br>
         <div>
-            <label for="categoryFilter">Filter by Origin Country:</label>
-            <select id="categoryFilter">
+            <label for="originCountry">Filter by Origin Country:</label>
+            <select name = "originCountry" id="categoryFilter">
                 <option value="">All</option>
                 <option value="France">France</option>
                 <option value="Italy">Italy</option>
@@ -98,13 +73,29 @@
 
     <section>
         <div>
-            <h3>Filter section</h3>
-            <div>
-                <p>Filter products by category:</p>
-                <button>Search</button>
-                <div id = "resultFilterByCategory "></div>
-            </div>
+            <p>Most expensive product <button onclick="renderMostExpensiveProduct()"
+                    id="showMostExpensiveButton">Filter</button></p>
         </div>
+
+        <hr>
+
+        <div>
+            <p>Cheapest product: <button onclick="renderCheapestProduct()" id="showCheapestButton">Filter</button></p>
+        </div>
+
+        <hr>
+
+        <div>
+            <header>
+                <h5>Product between a price interval</h5>
+            </header>
+            <p>Define interval price from $ <input type="text" size="5" />
+                until $
+                <input type="text" size="5" /> <button id="showIntervalPriceButton">Search</button>
+            </p>
+        </div>
+        <hr>
+        <button onclick="filterProducts()">Final Filter</button>
     </section>
 
     <script src="script.js"></script>
