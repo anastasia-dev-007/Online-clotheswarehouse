@@ -426,7 +426,7 @@ const filterByInterval = () => {
         maxPrice: document.getElementById("maxPrice").value,
     }
 
-    const filteredByInterval = products.filter (product => {
+    const filteredByInterval = products.filter(product => {
         if (filterFormData.minPrice && filterFormData.maxPrice) {
             return product.price >= filterFormData.minPrice && product.price <= filterFormData.maxPrice;
         }
@@ -444,7 +444,7 @@ const filterByCategory = () => {
 
     const filteredByCategory = products.filter(product => {
         if (filterFormData.category) {
-           return product.category === filterFormData.category;
+            return product.category === filterFormData.category;
         }
         return true;
     });
@@ -453,7 +453,7 @@ const filterByCategory = () => {
     renderProducts(filteredByCategory);
 }
 
-document.getElementById("categoryFilter").addEventListener('change',filterByCategory);
+document.getElementById("categoryFilter").addEventListener('change', filterByCategory);
 
 
 //Create a dropdown list for countries
@@ -476,7 +476,7 @@ uniqueCountryList.forEach(country => {
     option.value = country;
     originCountryList.appendChild(option);
 }
-    );
+);
 
 
 //Filter by COUNTRY
@@ -485,17 +485,17 @@ const filterByCountry = () => {
         originCountry: document.getElementById("originCountry").value,
     }
 
-    const filteredByCountry = products.filter (product => {
-        if(filterFormData.originCountry) {
+    const filteredByCountry = products.filter(product => {
+        if (filterFormData.originCountry) {
             return product.originCountry === filterFormData.originCountry;
         }
-        return true; 
+        return true;
     });
 
     renderProducts(filteredByCountry);
 }
 
-document.getElementById("originCountry").addEventListener('change',filterByCountry);
+document.getElementById("originCountry").addEventListener('change', filterByCountry);
 
 
 //FINAL FILTER which takes into consideration all criteria
@@ -520,9 +520,9 @@ const filterProducts = () => {
 
         if (filterFormData.category) {
             isAvailable = product.category === filterFormData.category;
-         }
+        }
 
-         if(filterFormData.originCountry) {
+        if (filterFormData.originCountry) {
             isAvailable = product.originCountry === filterFormData.originCountry;
         }
 
@@ -532,19 +532,31 @@ const filterProducts = () => {
 
         return isAvailable;
 
-     });
+    });
 
 
     renderProducts(filteredProducts);
 }
 
 
+//Reset filters
+const resetFilters = () => {
+    // Reset the values of filter elements (if needed)
+    document.getElementById("byName").value = "";
+    document.getElementById("categoryFilter").value = "";
+    document.getElementById("originCountry").value = "";
+    document.getElementById("minPrice").value = "";
+    document.getElementById("maxPrice").value = "";
+
+    // Render the original list of products
+    renderProducts(products);
+}
 
 // Function to find the most expensive product
 const findMostExpensiveProduct = (products) => {
     let mostExpensiveProduct = products[0];
 
-  products.forEach(product => {
+    products.forEach(product => {
         if (product.price > mostExpensiveProduct.price) {
             mostExpensiveProduct = product;
         }
@@ -554,20 +566,20 @@ const findMostExpensiveProduct = (products) => {
 
 //Function to render most expensive product
 const showMostExpensiveProduct = () => {
-    const mostExpensiveProduct = findMostExpensiveProduct(products); 
+    const mostExpensiveProduct = findMostExpensiveProduct(products);
     renderProducts([mostExpensiveProduct]);
 }
 
 // Function to find cheapest product
 const findCheapestProduct = (products) => {
-let cheapestProduct = products[0];
+    let cheapestProduct = products[0];
 
-products.forEach (product => {
-    if (product.price < cheapestProduct.price) {
-        cheapestProduct = product;
-    }
-})
-return cheapestProduct;
+    products.forEach(product => {
+        if (product.price < cheapestProduct.price) {
+            cheapestProduct = product;
+        }
+    })
+    return cheapestProduct;
 }
 
 //Function to render cheapest product
