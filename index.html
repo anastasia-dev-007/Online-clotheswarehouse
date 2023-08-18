@@ -15,11 +15,11 @@
 
 <body>
     <header>
-        <h1>Online Clothes Warehouse</h1>
+        <h1>Online Clothes Store</h1>
     </header>
 
     <section>
-        <h3>List of products in the warehouse</h3>
+        <h3>List of products</h3>
 
         <div id="productsList"></div>
         <button onclick="addNewProduct()">Add new product</button>
@@ -28,29 +28,29 @@
     <hr>
 
     <section>
-        <h3>Orders:</h3>
-        <div id="orderedProductsList"></div>
-        <button id="buyBtn" onclick="buyOrderedProducts()">Buy</button>
-    </section>
-
-    <hr>
-
-
-
-    <section>
         <header>
             <h3>Filter section</h3>
+            <h5>In this section you can make separate selection per each filter input</h5>
         </header>
         <div>
             <label>Search by name: </label>
-            <input id = "byName" type="text" name = "byName"/>
+            <input id="byName" oninput="filterByName()" type="text" name="byName" /> <button
+                onclick="filterByName()">Search</button>
         </div>
 
         </br>
 
         <div>
+            <p>Define interval price from $ <input id="minPrice" type="text" size="5" />
+                until $
+                <input id="maxPrice" type="text" size="5" /> <button onclick="filterByInterval()"
+                    id="showIntervalPriceButton">Search</button>
+            </p>
+        </div>
+
+        <div>
             <label for="categoryFilter">Filter by Category:</label>
-            <select name = "category" id="categoryFilter">
+            <select name="category" id="categoryFilter">
                 <option value="">All</option>
                 <option value="womenClothes">Women Clothes</option>
                 <option value="menClothes">Men Clothes</option>
@@ -60,43 +60,48 @@
         <br>
         <div>
             <label for="originCountry">Filter by Origin Country:</label>
-            <select name = "originCountry" id="categoryFilter">
-                <option value="">All</option>
-                <option value="France">France</option>
-                <option value="Italy">Italy</option>
-                <option value="China">China</option>
-            </select>
+            <select name="originCountry" id="originCountry"></select>
+        </div>
+        <br>
+
+
+        <div>
+            <header>
+                <h5>MAIN FILTER</h5>
+            </header>
+            <button onclick="filterProducts()">Final Filter</button>
         </div>
     </section>
 
     <hr>
 
     <section>
+        <header>
+            <h5>Filter by other criteria</h5>
+        </header>
         <div>
-            <p>Most expensive product <button onclick="renderMostExpensiveProduct()"
-                    id="showMostExpensiveButton">Filter</button></p>
+            <p>Most expensive product <button onclick="showMostExpensiveProduct()">Filter</button></p>
+        </div>
+
+
+        <div>
+            <p>Cheapest product: <button onclick="showCheapestProduct()" id="showCheapestButton">Filter</button></p>
         </div>
 
         <hr>
 
-        <div>
-            <p>Cheapest product: <button onclick="renderCheapestProduct()" id="showCheapestButton">Filter</button></p>
-        </div>
 
-        <hr>
-
-        <div>
-            <header>
-                <h5>Product between a price interval</h5>
-            </header>
-            <p>Define interval price from $ <input type="text" size="5" />
-                until $
-                <input type="text" size="5" /> <button id="showIntervalPriceButton">Search</button>
-            </p>
-        </div>
-        <hr>
-        <button onclick="filterProducts()">Final Filter</button>
     </section>
+
+    <br>
+
+    <section>
+        <h3>Orders:</h3>
+        <div id="orderedProductsList"></div>
+        <button id="buyBtn" onclick="buyOrderedProducts()">Buy</button>
+    </section>
+
+    <hr>
 
     <script src="script.js"></script>
 </body>

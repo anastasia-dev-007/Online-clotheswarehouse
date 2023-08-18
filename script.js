@@ -5,41 +5,106 @@ const products = [
         category: "womenClothes",
         price: 300,
         originCountry: "Italy",
-        //add more properties if necessary
     },
-
     {
         name: "coat",
         category: "womenClothes",
         price: 800,
         originCountry: "France",
-        //add more properties if necessary
     },
-
     {
         name: "jeans",
         category: "menClothes",
         price: 700,
         originCountry: "Italy",
-        //add more properties if necessary
     },
-
     {
         name: "jacket",
         category: "menClothes",
         price: 500,
         originCountry: "Italy",
-        //add more properties if necessary
     },
-
     {
         name: "romper",
         category: "babyClothes",
         price: 100,
         originCountry: "France",
-        //add more properties if necessary
     },
-    //add more clothes if necessary
+    // Additional products
+    {
+        name: "sweater",
+        category: "womenClothes",
+        price: 400,
+        originCountry: "USA",
+    },
+    {
+        name: "shirt",
+        category: "menClothes",
+        price: 250,
+        originCountry: "England",
+    },
+    {
+        name: "onesie",
+        category: "babyClothes",
+        price: 80,
+        originCountry: "Germany",
+    },
+    {
+        name: "skirt",
+        category: "womenClothes",
+        price: 220,
+        originCountry: "France",
+    },
+    {
+        name: "tie",
+        category: "menClothes",
+        price: 75,
+        originCountry: "Italy",
+    },
+    {
+        name: "bodysuit",
+        category: "babyClothes",
+        price: 120,
+        originCountry: "Spain",
+    },
+    // Additional products
+    {
+        name: "blouse",
+        category: "womenClothes",
+        price: 180,
+        originCountry: "Spain",
+    },
+    {
+        name: "suit",
+        category: "menClothes",
+        price: 900,
+        originCountry: "Italy",
+    },
+    {
+        name: "socks",
+        category: "babyClothes",
+        price: 15,
+        originCountry: "USA",
+    },
+    {
+        name: "jumpsuit",
+        category: "womenClothes",
+        price: 350,
+        originCountry: "France",
+    },
+    {
+        name: "vest",
+        category: "menClothes",
+        price: 120,
+        originCountry: "England",
+    },
+    {
+        name: "hat",
+        category: "babyClothes",
+        price: 30,
+        originCountry: "Germany",
+    },
+    // Add more clothes if necessary
 ];
 
 
@@ -215,102 +280,6 @@ const orderProduct = (product) => {
 }
 
 
-
-// Function to find the most expensive product
-const findMostExpensiveProduct = (products) => {
-    let mostExpensiveProduct = products[0];
-
-    products.forEach(product => {
-        if (product.price > mostExpensiveProduct.price) {
-            mostExpensiveProduct = product;
-        }
-    });
-    return mostExpensiveProduct;
-}
-
-// Function to render the most expensive product
-const renderMostExpensiveProduct = () => {
-    // Get the most expensive product
-    const mostExpensiveProduct = findMostExpensiveProduct(products);
-
-    const resultContainer = document.getElementById("resultMostExpensiveProduct");
-    const resultParagraph = document.createElement("p");
-    const resultText = document.createTextNode(`The most expensive product is: ${mostExpensiveProduct.name} with a price of $${mostExpensiveProduct.price}`);
-    resultParagraph.appendChild(resultText);
-
-
-    // Clear the container and add the result
-    resultContainer.innerHTML = "";
-    resultContainer.appendChild(resultParagraph);
-}
-
-// Add click event listener to the button
-// showMostExpensiveButton.addEventListener("click", renderMostExpensiveProduct);
-
-
-// Function to find cheapest product
-const findCheapestProduct = (products) => {
-    let cheapestProduct = products[0];
-
-    products.forEach(product => {
-        if (product.price < cheapestProduct.price) {
-            cheapestProduct = product;
-        }
-    });
-    return cheapestProduct;
-}
-
-
-// Function to render the cheapest product
-const renderCheapestProduct = () => {
-    // Get the cheapest product
-    const cheapestProduct = findCheapestProduct(products);
-
-    const resultContainer = document.getElementById("resultCheapestProduct");
-    const resultParagraph = document.createElement("p");
-    const resultText = document.createTextNode(`Cheapest product is: ${cheapestProduct.name} with a price of $${cheapestProduct.price}`);
-    resultParagraph.appendChild(resultText);
-
-    // Clear the container and add the result
-    resultContainer.innerHTML = "";
-    resultContainer.appendChild(resultParagraph);
-}
-
-// Add click event listener to the button
-// showCheapestButton.addEventListener("click", renderCheapestProduct);
-
-
-// Function to find interval price product
-const identifyIntervalProducts = (products, minPrice, maxPrice) => {
-    return products.filter((item) => item.price >= minPrice && item.price <= maxPrice);
-};
-
-// Function to render the interval price product
-const renderIntervalPriceProduct = () => {
-    // Prompt the user for the minimum and maximum prices
-    const minPrice = parseFloat(prompt("Enter the minimum price:"));
-    const maxPrice = parseFloat(prompt("Enter the maximum price:"));
-
-    // Get the interval price products
-    const intervalPriceProducts = identifyIntervalProducts(products, minPrice, maxPrice);
-
-    const resultContainer = document.getElementById("resultIntervalPriceProduct");
-    resultContainer.innerHTML = ""; // Clear the container
-
-    // Create and append a paragraph for each product in the interval
-    intervalPriceProducts.forEach(product => {
-        const resultParagraph = document.createElement("li");
-        const resultText = document.createTextNode(`${product.name} with a price of $${product.price}`);
-        resultParagraph.appendChild(resultText);
-        resultContainer.appendChild(resultParagraph);
-    });
-}
-
-
-// Add click event listener to the button
-showIntervalPriceButton.addEventListener("click", renderIntervalPriceProduct);
-
-
 const getProductByName = (productName) => {
     let productByName;
     const productIndex = products.findIndex(item => item.name === productName);
@@ -426,12 +395,118 @@ const buyOrderedProducts = () => {
 
 renderProducts(products);
 
-//Final filter function
+
+
+
+//Filter options per each function
+
+// Filter by NAME
+const filterByName = () => {
+    const filterFormData = {
+        name: document.getElementById("byName").value,
+    }
+
+    const filteredByName = products.filter(product => {
+        let isAvailable = true;
+
+        if (filterFormData.name) {
+            isAvailable = product.name.toLowerCase().startsWith(filterFormData.name.toLowerCase());
+        }
+        return isAvailable;
+    });
+
+
+    renderProducts(filteredByName);
+}
+
+//Filter by INTERVAL PRICE
+const filterByInterval = () => {
+    const filterFormData = {
+        minPrice: document.getElementById("minPrice").value,
+        maxPrice: document.getElementById("maxPrice").value,
+    }
+
+    const filteredByInterval = products.filter (product => {
+        if (filterFormData.minPrice && filterFormData.maxPrice) {
+            return product.price >= filterFormData.minPrice && product.price <= filterFormData.maxPrice;
+        }
+        return true;
+    });
+    renderProducts(filteredByInterval);
+}
+
+
+//Filter by CATEGORY
+const filterByCategory = () => {
+    const filterFormData = {
+        category: document.getElementById("categoryFilter").value,
+    }
+
+    const filteredByCategory = products.filter(product => {
+        if (filterFormData.category) {
+           return product.category === filterFormData.category;
+        }
+        return true;
+    });
+
+
+    renderProducts(filteredByCategory);
+}
+
+document.getElementById("categoryFilter").addEventListener('change',filterByCategory);
+
+
+//Create a dropdown list for countries
+const uniqueCountryList = [...new Set(products.map(product => product.originCountry))];//get unique list. I use map because it gives me acces to property of object product
+
+const originCountryList = document.getElementById("originCountry")
+originCountryList.innerHTML = "";//reset list
+
+//create option "All"
+const allOption = document.createElement("option");
+allOption.textContent = "All";
+allOption.value = "";
+originCountryList.appendChild(allOption);
+
+
+//create rest options from the unique list
+uniqueCountryList.forEach(country => {
+    const option = document.createElement("option");
+    option.textContent = country;
+    option.value = country;
+    originCountryList.appendChild(option);
+}
+    );
+
+
+//Filter by COUNTRY
+const filterByCountry = () => {
+    const filterFormData = {
+        originCountry: document.getElementById("originCountry").value,
+    }
+
+    const filteredByCountry = products.filter (product => {
+        if(filterFormData.originCountry) {
+            return product.originCountry === filterFormData.originCountry;
+        }
+        return true; 
+    });
+
+    renderProducts(filteredByCountry);
+}
+
+document.getElementById("originCountry").addEventListener('change',filterByCountry);
+
+
+//FINAL FILTER which takes into consideration all criteria
 const filterProducts = () => {
     //la inceput citim datele din formular
     const filterFormData = {
-        name: "j", //document.getElementById("byName").form.elements.name.value
-        category: null, //document.getElementById("categoryFilter")form.elements.category.value
+        name: document.getElementById("byName").value,
+        category: document.getElementById("categoryFilter").value,
+        originCountry: document.getElementById("originCountry").value,
+        minPrice: document.getElementById("minPrice").value,
+        maxPrice: document.getElementById("maxPrice").value,
     }
 
     const filteredProducts = products.filter(product => {
@@ -445,29 +520,63 @@ const filterProducts = () => {
 
         if (filterFormData.category) {
             isAvailable = product.category === filterFormData.category;
+         }
 
+         if(filterFormData.originCountry) {
+            isAvailable = product.originCountry === filterFormData.originCountry;
         }
 
-        //continuam asa pentru fiecare
-        return isAvailable;
-    });
+        if (filterFormData.minPrice && filterFormData.maxPrice) {
+            return product.price >= filterFormData.minPrice && product.price <= filterFormData.maxPrice;
+        }
 
-    console.log(filteredProducts); //doar ca acum trebuie sa afisam constanta filteredProducts in tabelul initial dupa ce dam click pe filter
+        return isAvailable;
+
+     });
+
 
     renderProducts(filteredProducts);
 }
 
 
-//const filterFormData = {
-    // name: document.getElementById("byName").form.elements.name.value,
-    // minPrice: document.getElementById("categoryFilter")form.elements.minPrice.value,
 
-    //maxPrice : document.getElementById("categoryFilter")form.elements.minPrice.value,
+// Function to find the most expensive product
+const findMostExpensiveProduct = (products) => {
+    let mostExpensiveProduct = products[0];
 
-    // if (filterFormData.minprice) {
-    //     isAvailable = product.category === filterFormData.category;
+  products.forEach(product => {
+        if (product.price > mostExpensiveProduct.price) {
+            mostExpensiveProduct = product;
+        }
+    });
+    return mostExpensiveProduct;
+}
+
+//Function to render most expensive product
+const showMostExpensiveProduct = () => {
+    const mostExpensiveProduct = findMostExpensiveProduct(products); 
+    renderProducts([mostExpensiveProduct]);
+}
+
+// Function to find cheapest product
+const findCheapestProduct = (products) => {
+let cheapestProduct = products[0];
+
+products.forEach (product => {
+    if (product.price < cheapestProduct.price) {
+        cheapestProduct = product;
+    }
+})
+return cheapestProduct;
+}
+
+//Function to render cheapest product
+const showCheapestProduct = () => {
+    const cheapestProducts = findCheapestProduct(products);
+    renderProducts([cheapestProducts]);
+}
 
 
-    //item.price >=minprice && item.price <= maxPrice
-    // }
+
+
 
