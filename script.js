@@ -122,24 +122,16 @@ const products = [
     },
 ];
 
-
-//Declared constants for "Buy" btn to function. Without this declaration btn didn't work
-const productsListContainer = document.getElementById("productsList");
-const tableElement = document.createElement("table");
-
-
 // Function to render the list of products
 const renderProducts = (products) => {
     const productsListContainer = document.getElementById("productsList");
     const tableElement = document.createElement("table");
     const tableBodyElement = document.createElement("tbody");
     const tableHeaderElement = document.createElement("tr");
-    const columns = ["No", "Product Name", "Category", "Price", "Origin Country", "Actions", "Order"];
-
+    const columns = ["No", "Product Name", "Category", "Price", "Origin Country", "Actions"];
 
     // Add Bootstrap classes to the table
     tableElement.classList.add("table", "table-hover");
-
 
     // Create table header cells
     columns.forEach(column => {
@@ -152,17 +144,13 @@ const renderProducts = (products) => {
     tableBodyElement.appendChild(tableHeaderElement);
 
     // Create table rows for each product
-    let orderNumber = 1; // Initialize the order number counter
-
-    products.forEach((product) => {
+    products.forEach((product, index) => {
         const tableRow = document.createElement("tr");
-
         // Add order number cell
         const orderNumberCell = document.createElement("td");
-        const orderNumberText = document.createTextNode(orderNumber);
+        const orderNumberText = document.createTextNode(index + 1);
         orderNumberCell.appendChild(orderNumberText);
         tableRow.appendChild(orderNumberCell);
-        orderNumber++; // Increment the order number
 
         // Populate table cells with product data
         for (const column in product) {
@@ -178,7 +166,6 @@ const renderProducts = (products) => {
         const deleteButton = document.createElement("button");
         const deleteButtonText = document.createTextNode("Delete");
 
-        const orderCell = document.createElement("td");
         const orderButton = document.createElement("button");
         const orderButtonText = document.createTextNode("Order");
 
@@ -187,8 +174,7 @@ const renderProducts = (products) => {
         orderButton.appendChild(orderButtonText);
         actionCell.appendChild(editButton);
         actionCell.appendChild(deleteButton);
-        orderCell.appendChild(orderButton);
-
+        actionCell.appendChild(orderButton);
 
         // Add event listeners to buttons
         editButton.addEventListener("click", () => {
@@ -203,8 +189,6 @@ const renderProducts = (products) => {
         });
 
         tableRow.appendChild(actionCell);
-        tableRow.appendChild(orderCell);
-
         tableBodyElement.appendChild(tableRow);
     });
 
@@ -236,10 +220,10 @@ const addNewProduct = () => {
 // Function to edit a product's information
 const editProduct = ({ name, category, price, originCountry }) => {
     // Prompt user for new information
-    const newName = prompt("Introduce new product name: ");
-    const newCategory = prompt("Introduce new product category: ");
-    const newPrice = prompt("Introduce new product price: ");
-    const newOriginCountry = prompt("Introduce new product origin country: ");
+    const newName = prompt("Introduce new product name: ", name);//adaugam al doilea parametru care apare ca un placeHolder
+    const newCategory = prompt("Introduce new product category: ", category);//adaugam al doilea parametru care apare ca un placeHolder
+    const newPrice = prompt("Introduce new product price: ", price);//adaugam al doilea parametru care apare ca un placeHolder
+    const newOriginCountry = prompt("Introduce new product origin country: ", originCountry);//adaugam al doilea parametru care apare ca un placeHolder
     const newProduct = {
         name: newName,
         category: newCategory,
@@ -247,15 +231,12 @@ const editProduct = ({ name, category, price, originCountry }) => {
         originCountry: newOriginCountry,
     };
 
-
     // Find the product index and update the array
     const productIndex = products.findIndex(product => product.name === name);
     products.splice(productIndex, 1, newProduct);
 
     // Update and render the product list
     renderProducts(products);
-
-    // Function to delete a product
 }
 
 // Function to delete a product
@@ -281,7 +262,6 @@ const orderProduct = (product) => {
 
     const orderedProduct = products.splice(productIndex, 1)[0]; // Remove the ordered product from the 'products' array 
     orderedProducts.push(orderedProduct);    // Add the ordered product to the 'orderedProducts' array
-
 
     // Move the table row from the main table to the ordered products table
     renderOrderedProducts();
@@ -343,14 +323,6 @@ const renderOrderedProducts = () => {
     orderedProductsContainer.appendChild(orderedTable);
 }
 
-// Update the product list container
-productsListContainer.innerHTML = "";
-productsListContainer.appendChild(tableElement);
-
-// Update the ordered products container
-renderOrderedProducts();
-
-
 //Function to remove item from orders
 const removeProduct = (orderedProduct) => {
     const orderedProductIndex = orderedProducts.findIndex(product => product.name === orderedProduct.name);
@@ -360,7 +332,6 @@ const removeProduct = (orderedProduct) => {
     renderOrderedProducts();
     renderProducts(products);
 }
-
 
 //Buy Button 
 const buyOrderedProducts = () => {
@@ -377,7 +348,7 @@ const buyOrderedProducts = () => {
         alert.style.color = "red";//set color on element (!to remember to set styles on element not on "alertText")
 
     } else {
-        orderedProducts.splice(0,orderedProducts.length);//cleared the array
+        orderedProducts.splice(0, orderedProducts.length);//cleared the array
 
         const orderedProductsAlert = document.getElementById("orderedProductsList");
         orderedProductsAlert.innerHTML = "";
@@ -388,29 +359,50 @@ const buyOrderedProducts = () => {
         alert.style.color = "green";
     }
 }
-renderProducts(products);
-
 
 //Create a dropdown list for countries (developed this to avoid manual creation of options in index.html)
-const uniqueCountryList = [...new Set(products.map(product => product.originCountry))];//get unique list. I use map because it gives me acces to property of object product
+const addOriginCountryOption = () => {
+    const uniqueCountryList = [...new Set(products.map(product => product.originCountry))];//get unique list. I use map because it gives me acces to property of object product
 
-const originCountryList = document.getElementById("originCountry")
-originCountryList.innerHTML = "";//reset list
+    const originCountryList = document.getElementById("originCountry")
+    originCountryList.innerHTML = "";//reset list
 
-//Create option "All"
-const allOption = document.createElement("option");
-allOption.textContent = "All";
-allOption.value = "";
-originCountryList.appendChild(allOption);
+    //Create option "All"
+    const allOption = document.createElement("option");
+    allOption.textContent = "All";
+    allOption.value = "";
+    originCountryList.appendChild(allOption);
 
+    //Create rest options from the unique list
+    uniqueCountryList.forEach(country => {
+        const option = document.createElement("option");
+        option.textContent = country;
+        option.value = country;
+        originCountryList.appendChild(option);
+    });
+}
 
-//Create rest options from the unique list
-uniqueCountryList.forEach(country => {
-    const option = document.createElement("option");
-    option.textContent = country;
-    option.value = country;
-    originCountryList.appendChild(option);
-});
+//Create a dropdown list for categories (developed this to avoid manual creation of options in index.html)
+const addCategoryOptions = () => {
+    const uniqueCategoryList = [...new Set(products.map(product => product.category))];//get unique list. I use map because it gives me acces to property of object product
+
+    const categoryList = document.getElementById("categoryFilter")
+    categoryList.innerHTML = "";//reset list
+
+    //Create option "All"
+    const allOption = document.createElement("option");
+    allOption.textContent = "All";
+    allOption.value = "";
+    categoryList.appendChild(allOption);
+
+    //Create rest options from the unique list
+    uniqueCategoryList.forEach(category => {
+        const option = document.createElement("option");
+        option.textContent = category;
+        option.value = category;
+        categoryList.appendChild(option);
+    });
+}
 
 //Filter section which contains interconnected filters that update each other as the user interacts with them
 const currentFilters = {
@@ -421,15 +413,17 @@ const currentFilters = {
     originCountry: "",
 };
 
+
+
 const applyFilters = () => {
-    const filteredProducts = products.filter (product => {
+    const filteredProducts = products.filter(product => {
         let isAvailable = true;
 
-        if(currentFilters.name) {
-            isAvailable = product.name.toLowerCase().startsWith(currentFilters.name.toLowerCase());
-        }
+        if (currentFilters.name) {
+            isAvailable = product.name.toLowerCase().includes(currentFilters.name.toLowerCase());
+        }//am schimbat startsWith cu includes pentru ca la cautarea"sui..." dadea doar "suit", dar nu si "bodysuit"
 
-        if(currentFilters.minPrice && currentFilters.maxPrice) {
+        if (currentFilters.minPrice && currentFilters.maxPrice) {
             isAvailable = isAvailable && (product.price >= currentFilters.minPrice && product.price <= currentFilters.maxPrice)
         }
 
@@ -468,14 +462,12 @@ document.getElementById("categoryFilter").addEventListener("change", () => {
     applyFilters();
 });
 
-
 document.getElementById("originCountry").addEventListener("change", () => {
     currentFilters.originCountry = document.getElementById("originCountry").value;
     applyFilters();
 });
 
 applyFilters();
-
 
 //Functionality: Reset filters
 const resetFilters = () => {
@@ -485,7 +477,6 @@ const resetFilters = () => {
     document.getElementById("originCountry").value = "";
     document.getElementById("minPrice").value = "";
     document.getElementById("maxPrice").value = "";
-
     // Render the original list of products
     renderProducts(products);
 }
@@ -526,88 +517,12 @@ const showCheapestProduct = () => {
     renderProducts([cheapestProducts]);
 }
 
+//Functia care va apela functiile create mai sus, fara acestea nu se vor randa elementele create, dar le-am cumulat aici pentru ca sa fie mai curat
+const init = () => {
+    renderProducts(products);
+    renderOrderedProducts();
+    addOriginCountryOption();
+    addCategoryOptions();
+}
 
-
-
-
-//OTHER METHODS OF FILTERS WHICH I DEVELOPED, BUT THEN DECIDED TO MODIFY THEM. In lines below the filters were working independently, reseting other filters when we moved to them. I kept events declarations in index.html which were used for below lines of code
-
-//Filter options per each function
-
-// // Filter by NAME
-// const filterByName = () => {
-//     const filterFormData = {
-//         name: document.getElementById("byName").value,
-//     }
-
-//     const filteredByName = products.filter(product => {
-//         let isAvailable = true;
-
-//         if (filterFormData.name) {
-//             isAvailable = product.name.toLowerCase().startsWith(filterFormData.name.toLowerCase());
-//         }
-//         return isAvailable;
-//     });
-
-
-//     renderProducts(filteredByName);
-// }
-
-// //Filter by INTERVAL PRICE
-// const filterByInterval = () => {
-//     const filterFormData = {
-//         minPrice: document.getElementById("minPrice").value,
-//         maxPrice: document.getElementById("maxPrice").value,
-//     }
-
-//     const filteredByInterval = products.filter(product => {
-//         if (filterFormData.minPrice && filterFormData.maxPrice) {
-//             return product.price >= filterFormData.minPrice && product.price <= filterFormData.maxPrice;
-//         }
-//         return true;
-//     });
-//     renderProducts(filteredByInterval);
-// }
-
-
-// //Filter by CATEGORY
-// const filterByCategory = () => {
-//     const filterFormData = {
-//         category: document.getElementById("categoryFilter").value,
-//     }
-
-//     const filteredByCategory = products.filter(product => {
-//         if (filterFormData.category) {
-//             return product.category === filterFormData.category;
-//         }
-//         return true;
-//     });
-
-
-//     renderProducts(filteredByCategory);
-// }
-
-// document.getElementById("categoryFilter").addEventListener('change', filterByCategory);
-
-
-// //Filter by COUNTRY
-// const filterByCountry = () => {
-//     const filterFormData = {
-//         originCountry: document.getElementById("originCountry").value,
-//     }
-
-//     const filteredByCountry = products.filter(product => {
-//         if (filterFormData.originCountry) {
-//             return product.originCountry === filterFormData.originCountry;
-//         }
-//         return true;
-//     });
-
-//     renderProducts(filteredByCountry);
-// }
-
-// document.getElementById("originCountry").addEventListener('change', filterByCountry);
-
-
-
-
+init();
