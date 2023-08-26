@@ -181,7 +181,7 @@ const renderProducts = (products) => {
             editProduct(product);
         });
         deleteButton.addEventListener("click", () => {
-            deleteProduct(product);
+            deleteProduct(index);
         });
 
         orderButton.addEventListener("click", () => {
@@ -240,13 +240,12 @@ const editProduct = ({ name, category, price, originCountry }) => {
 }
 
 // Function to delete a product
-const deleteProduct = ({ name }) => {
+const deleteProduct = (index) => {
     // Confirm user's intention to delete
     const canDelete = confirm("Are you sure you want to delete this product?")
     if (canDelete) {
         // Find the product index and remove from the array
-        const productIndex = products.findIndex(product => product.name === name);
-        products.splice(productIndex, 1);
+        products.splice(index, 1);
 
         // Update and render the user list
         renderProducts(products);
